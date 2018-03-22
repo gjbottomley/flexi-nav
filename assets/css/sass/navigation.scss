@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+$flexi-brand: #333333;
+
+
+$flexi-color: #ffffff;
+$flexi-family: 'Poppins', sans-serif;
+$flexi-padding: 8px 15px;
+$flexi-li-padding: 12px 0px;
+$flexi-fsize: 16px;
+$flexi-count-bg: #f14e4e;
+
+/*
+	Global
+---------------*/
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+	min-width: 320px;
+	zoom: 1;
+  padding: 0;
+  margin: 0;
+}
+
+// https://www.w3schools.com/html/html5_browsers.asp  = html5 support
+header, section, footer, aside, nav, main, article, figure {
+	display: block;
+}
+
+iframe {
+	border: 0;
+}
+.flexi-navigation {
+  position: relative;
+  //height: 60px;
+  align-items: center;
+  background: $flexi-brand;
+  font-family: $flexi-family;
+
+  // Flex
+  display: flex;
+}
+
+.flexi-navigation h1 {
+  color: $flexi-color;
+  padding: 0 20px;
+  font-weight: bold;
+  margin: 15px 0;
+
+  // Flex
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+}
+
+.flexi-burger {
+  position: relative;
+  background: red;
+  margin: 0 20px;
+
+  color: $flexi-color;
+
+  // Flex
+  display: flex;
+  justify-content: flex-end;
+
+  &.hidden {
+    transition: none;
+    width: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  &.count {
+    &:after {
+      content: attr(count);
+      width: 20px;
+      height: 20px;
+      background: $flexi-count-bg;
+      color: #fff;
+      box-shadow: 0 0 1px 0 rgba(0,0,0,0.8);
+      border-radius: 50%;
+      font-size: 12px;
+      line-height: 12px;
+
+      position: absolute;
+      top: -8px;
+      right: -8px;
+
+      // Flex
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.flexi-burger__icon {
+  width: 40px;
+  height: 40px;
+  background: darken($flexi-brand, 5%);
+  display: inline-block;
+
+  &:before, &:after, .flexi-burger__break {
+    content: '';
+    background: $flexi-color;
+    display: inline-block;
+    height: 2px;
+    left: 0;
+    right: 0;
+    position: absolute;
+    width: 25px;
+    margin: 0 auto;
+    transition: 0.2s ease-out;
+  }
+
+  &:before {
+    top: 10px;
+  }
+
+  &:after {
+    bottom: 10px;
+  }
+
+  .flexi-burger__break {
+    top: 50%;
+    margin-top: -1px;
+  }
+
+  .active & {
+    .flexi-burger__break {
+      display: none;
+    }
+    &:before {
+      top: 50%;
+      margin-top: -1px;
+      transform: rotate(-135deg);
+
+    }
+    &:after {
+      bottom: 50%;
+      margin-bottom: -1px;
+      transform: rotate(135deg);
+    }
+  }
+}
+
+.flexi-navigation__list {
+  overflow: hidden;
+  list-style: none;
+
+  // Flex
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+  margin: 0;
+
+  &.flexi-open {
+    overflow: visible;
+  }
+
+  > li {
+      padding: $flexi-li-padding;
+  }
+
+  li {
+    // Flex
+    flex: none;
+
+    a {
+      display: block;
+      padding: $flexi-padding;
+      color: $flexi-color;
+      text-decoration: none;
+      transition: 0.3s background ease-out;
+    }
+  }
+}
+
+.flexi-navigation__dropdown {
+  position: relative;
+
+  > a {
+    padding-right: 30px !important;
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      margin-top: -3px;
+      right: 10px;
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+
+      border-top: 6px solid #fff;
+    }
+  }
+
+  .flexi-toggler {
+    @media all and(max-width: 500px) {
+      position: static;
+    }
+    @media all and(min-width: 500px) {
+      left: 0;
+      right: auto;
+      width: 260px;
+    }
+
+    li {
+      a {
+        padding-right: 20px;
+      }
+    }
+  }
+}
+
+.flexi-toggler {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: none;
+
+  position: absolute;
+  background: $flexi-brand;
+  right: 0;
+  left: 0;
+  top: 100%;
+  margin: 0;
+
+  @media all and (min-width:500px) {
+    max-width: 340px;
+    left: auto;
+  }
+
+  li {
+    border-top: 1px solid darken($flexi-brand, 2%);
+
+    a {
+      padding: 15px 20px;
+      color: $flexi-color;
+      background: $flexi-brand;
+      text-decoration: none;
+      display: block;
+      transition: 0.3s background ease-out;
+
+      &:hover, &.active {
+
+        background: darken($flexi-brand, 5%);
+      }
+
+      @media all and (min-width:500px) {
+        padding-right: 60px;
+      }
+    }
+  }
+}
