@@ -1,74 +1,84 @@
 $(function() {
 
-  var $nav = $('.flexi-navigation');
-  var $btn = $('.flexi-burger');
-  var $vlinks = $('.flexi-navigation__list');
-  var $hlinks = $('.flexi-responder');
-  var $dlinks = $('.flexi-navigation__dropdown ul');
-  var $dlink = $('.flexi-navigation__dropdown a');
+  var nav = '.flexi-navigation';
+  var burger = '.flexi-burger';
+  var nav_list = '.flexi-navigation__list';
+  var nav_responder = '.flexi-responder';
+  var dropdown_list = '.flexi-navigation__dropdown ul';
+  var dropdown_link = '.flexi-navigation__dropdown a';
 
-  var numOfItems = 0;
-  var totalSpace = 0;
-  var breakWidths = [];
+  var flexiItems = 0;
+  var totalWidth = 0;
+  var responder = [];
 
   // Get initial state
-  $vlinks.children().outerWidth(function(i, w) {
-    totalSpace += w;
-    numOfItems += 1;
-    breakWidths.push(totalSpace);
+  $(nav_list).children().outerWidth(function(i, width) {
+    totalWidth += width;
+    flexiItems += 1;
+    responder.push(totalWidth);
   });
 
-  var availableSpace, numOfVisibleItems, requiredSpace;
+  var flexiWidth, flexiVisible, flexiSpace;
 
-  function Fit() {
+  function flexFit() {
 
-    // Get instant state
-    availableSpace = $vlinks.width() - 10;
-    numOfVisibleItems = $vlinks.children().length;
-    requiredSpace = breakWidths[numOfVisibleItems - 1];
+    // Get Flex State
+    flexiWidth = $(nav_list).width() - 10;
+    flexiVisible = $(nav_list).children().length;
+    flexiSpace = responder[flexiVisible - 1];
 
-    // There is not enought space
-    if (requiredSpace > availableSpace) {
-      $vlinks.children().last().prependTo($hlinks);
-      numOfVisibleItems -= 1;
-      Fit();
-      // There is more than enough space
-    } else if (availableSpace > breakWidths[numOfVisibleItems]) {
-      $hlinks.children().first().appendTo($vlinks);
-      numOfVisibleItems += 1;
+    // Add Item to Flex-responder
+    if (flexiSpace > flexiWidth) {
+      $(nav_list).children().last().prependTo($(nav_responder));
+      flexiVisible -= 1;
+      flexFit();
+      // Remove Item from Flex-responder
+    } else if (flexiWidth > responder[flexiVisible]) {
+
+      $(nav_responder).children().first().appendTo($(nav_list));
+      flexiVisible += 1;
     }
-    // Update the button accordingly
-    $btn.attr("count", numOfItems - numOfVisibleItems);
-    if (numOfVisibleItems === numOfItems) {
-      $btn.addClass('hidden');
-    } else $btn.removeClass('hidden');
+
+    // Update Flexi count
+    $(burger).attr("count", flexiItems - flexiVisible);
+
+    if (flexiVisible === flexiItems) {
+      $(burger).addClass('hidden');
+    } else {
+      $(burger).removeClass('hidden');
+    }
 
     // Apend all Children to Mobile navigation
     if ($(window).outerWidth() < 500) {
-      $vlinks.children().prependTo($hlinks);
+      $(nav_list).children().prependTo($(nav_responder));
     }
 
-    $dlinks.hide();
-    $vlinks.removeClass('flexi-open');
+    $(dropdown_list).hide();
+    $(nav_list).removeClass('flexi-open');
   }
 
   // Window listeners
   $(window).resize(function() {
-    Fit();
+    flexFit();
   });
 
-  $btn.on('click', function() {
-    $btn.toggleClass('active');
-    $dlinks.slideUp();
-    $hlinks.slideToggle();
+  $(burger).on('click', function() {
+    $(this).toggleClass('active');
+    $(dropdown_list).slideUp();
+    $(nav_responder).slideToggle();
   });
 
-  $dlink.on('click', function() {
-    $dlinks.slideToggle();
-    $hlinks.slideUp();
-    $btn.removeClass('active');
-    $vlinks.addClass('flexi-open');
+  $(dropdown_link).on('click', function() {
+    $(dropdown_list).slideToggle();
+
+    // if inside responder
+    if ($(this).parents(nav_list).length) {
+      $(burger).removeClass('active');
+      $(nav_list).addClass('flexi-open');
+      $(nav_responder).slideUp();
+    }
+
   });
 
-  Fit();
+  flexFit();
 });

@@ -28,6 +28,7 @@ body {
 	zoom: 1;
   padding: 0;
   margin: 0;
+  height: 3000px;
 }
 
 // https://www.w3schools.com/html/html5_browsers.asp  = html5 support
@@ -47,6 +48,14 @@ iframe {
 
   // Flex
   display: flex;
+
+  &.fixed, &.sticky {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 9999;
+  }
 }
 
 .flexi-navigation h1 {
