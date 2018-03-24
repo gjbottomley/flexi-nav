@@ -58,6 +58,10 @@ iframe {
   }
 }
 
+.flexi-freeze {
+  overflow: hidden !important;
+}
+
 .flexi-navigation h1 {
   color: $flexi-color;
   padding: 0 20px;
@@ -246,6 +250,7 @@ iframe {
   left: 0;
   top: 100%;
   margin: 0;
+  overflow: auto;
 
   @media all and (min-width:500px) {
     max-width: 340px;
