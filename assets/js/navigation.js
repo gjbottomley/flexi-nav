@@ -58,6 +58,7 @@ $(function() {
   }
 
   function responderHeight() {
+
     setTimeout(function(){
       var nav_height = $(nav).outerHeight();
       var window_height = $(window).height() - nav_height;
@@ -66,6 +67,64 @@ $(function() {
       $(nav_responder).css('max-height', window_height);
     }, 500);
   }
+
+  function StickyNav() {
+  /*==================================
+  Sticky Object on scroll up
+  ==================================*/
+
+  // Hide Element on scroll down
+  var didScroll,
+    lastScrollTop = 0,
+    delta = 100, // how many pixels before the class is appended
+    headerHeight = $(nav).outerHeight();
+
+    // Allows data arg for diffrent engaugement
+
+    if(typeof $(nav).data('stick-on') != 'undefined') {
+      headerHeight = $(nav).data('stick-on');
+    }
+
+  $(window).scroll(function (event) {
+    didScroll = true;
+  });
+
+  setInterval(function () {
+    if (didScroll) {
+      hasScrolled();
+      didScroll = false;
+    }
+  }, 60);
+
+  function hasScrolled() {
+    var scrollTop = $(this).scrollTop();
+
+    // Make sure they scroll more than delta
+    if (Math.abs(lastScrollTop - scrollTop) <= delta)
+      return;
+
+    if (scrollTop > lastScrollTop && scrollTop > headerHeight) {
+      // Scroll Down
+      $(nav).addClass('header-sticky');
+      var nav_offset = $(nav).outerHeight();
+
+      $(nav).css('top', - nav_offset);
+
+      if ($(window).outerWidth() > 500) {
+        $(dropdown_list).slideUp();
+      }
+
+    } else {
+      // Scroll Up
+      if (scrollTop + $(window).height() < $(document).height()) {
+        $(nav).removeClass('header-sticky');
+        $(nav).css('top', '0');
+      }
+    }
+
+    lastScrollTop = scrollTop;
+  }
+}
 
   // Window listeners
   $(window).resize(function() {
@@ -77,17 +136,31 @@ $(function() {
     $(this).toggleClass('active');
     $(dropdown_list).slideUp();
     $(nav_responder).slideToggle();
-
     // Apend all Children to Mobile navigation
     if ($(window).outerWidth() < 500) {
-      $('body').toggleClass('flexi-freeze');
+      if($('body').hasClass('flexi-freeze')) {
+        $('body').removeClass('flexi-freeze');
+      } else {
+        $('body').addClass('flexi-freeze');
+      }
+    } else {
+      $('body').removeClass('flexi-freeze');
     }
 
     responderHeight();
   });
 
-  $(dropdown_link).on('click', function() {
-    $(dropdown_list).slideToggle();
+  $(dropdown_link).on('click', function(e) {
+    var element = $(e.target),
+        area = element.attr('data-toggle'),
+  			areaObj = $('#js-' + area),
+  			activeClass = 'active';
+
+  		$(this).not(element).removeClass(activeClass);
+  		element.toggleClass(activeClass);
+
+  		$(dropdown_list).not(areaObj).slideUp();
+  		areaObj.slideToggle();
 
     // if inside responder
     if ($(this).parents(nav_list).length) {
@@ -95,8 +168,11 @@ $(function() {
       $(nav_list).addClass('flexi-open');
       $(nav_responder).slideUp();
     }
-
   });
+
+  if($(nav).hasClass('sticky')) {
+    StickyNav();
+  }
 
   flexFit();
 });

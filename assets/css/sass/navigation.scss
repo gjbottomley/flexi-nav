@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 
 $flexi-brand: #333333;
+$mobile-break: 500px;
 
 
 $flexi-color: #ffffff;
@@ -9,6 +10,7 @@ $flexi-padding: 8px 15px;
 $flexi-li-padding: 12px 0px;
 $flexi-fsize: 16px;
 $flexi-count-bg: #f14e4e;
+$flexi-overlay-bg: #000000;
 
 /*
 	Global
@@ -55,11 +57,26 @@ iframe {
     right: 0;
     left: 0;
     z-index: 9999;
+    transition: 0.3s ease-out;
   }
 }
 
 .flexi-freeze {
-  overflow: hidden !important;
+  @media all and(max-width:$mobile-break) {
+    overflow: hidden !important;
+    position: relative;
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 9998;
+      background: rgba($flexi-overlay-bg, 0.6);
+      animation: flexiFadeIn 0.6s;
+    }
+  }
 }
 
 .flexi-navigation h1 {
@@ -76,7 +93,6 @@ iframe {
 
 .flexi-burger {
   position: relative;
-  background: red;
   margin: 0 20px;
 
   color: $flexi-color;
@@ -123,7 +139,9 @@ iframe {
   background: darken($flexi-brand, 5%);
   display: inline-block;
 
-  &:before, &:after, .flexi-burger__break {
+  &:before,
+  &:after,
+  .flexi-burger__break {
     content: '';
     background: $flexi-color;
     display: inline-block;
@@ -221,10 +239,10 @@ iframe {
   }
 
   .flexi-toggler {
-    @media all and(max-width: 500px) {
+    @media all and(max-width: $mobile-break) {
       position: static;
     }
-    @media all and(min-width: 500px) {
+    @media all and(min-width: $mobile-break) {
       left: 0;
       right: auto;
       width: 260px;
@@ -252,7 +270,7 @@ iframe {
   margin: 0;
   overflow: auto;
 
-  @media all and (min-width:500px) {
+  @media all and (min-width:$mobile-break) {
     max-width: 340px;
     left: auto;
   }
@@ -273,9 +291,21 @@ iframe {
         background: darken($flexi-brand, 5%);
       }
 
-      @media all and (min-width:500px) {
+      @media all and (min-width:$mobile-break) {
         padding-right: 60px;
       }
     }
   }
+}
+
+.flexi-responder  {
+  .flexi-toggler {
+    position: static;
+    width: auto;
+  }
+}
+
+@keyframes flexiFadeIn {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
 }

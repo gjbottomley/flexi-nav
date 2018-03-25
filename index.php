@@ -6,19 +6,26 @@
     <link rel="stylesheet" type="text/css" href="assets/css/navigation.css">
   </head>
   <body>
-    <nav class="flexi-navigation fixed">
+    <nav class="flexi-navigation sticky">
       <h1>Flexi Nav</h1>
       <ul class="flexi-navigation__list">
         <li><a href="#" title="simple item">simple item</a></li>
         <li class="flexi-navigation__dropdown">
-          <a href="#" title="dropdown">dropdown</a>
-          <ul class="flexi-toggler">
+          <a href="#" title="dropdown" data-toggle="dropdown">dropdown</a>
+          <ul class="flexi-toggler" id="js-dropdown">
             <li><a href="#" title="Dropdown item">Dropdown item</a></li>
             <li><a href="#" title="Dropdown item">Dropdown item</a></li>
             <li><a href="#" title="Dropdown item">Dropdown item</a></li>
           </ul>
         </li>
-        <li><a href="#">handles</a></li>
+        <li class="flexi-navigation__dropdown">
+          <a href="#" title="dropdown" data-toggle="mega">mega dropdown</a>
+          <ul class="flexi-toggler" id="js-mega">
+            <li><a href="#" title="Dropdown item">Dropdown item</a></li>
+            <li><a href="#" title="Dropdown item">Dropdown item</a></li>
+            <li><a href="#" title="Dropdown item">Dropdown item</a></li>
+          </ul>
+        </li>
         <li><a href="#">overflowing</a></li>
         <li><a href="#">menu</a></li>
         <li><a href="#">elements</a></li>
